@@ -25,7 +25,7 @@ namespace BusinessLayer.Managers
         {
             SqlConnection connection = GetConnection();
             List<Bestelling> besL = new List<Bestelling>();
-            string query = "SELECT * FROM [Bestellingssysteem].[dbo].[ORDER]";
+            string query = "SELECT * FROM [Bestellingssysteem].[dbo].[ORDER] o JOIN [Bestellingssysteem].[dbo].[CUSTOMER] c ON (o.CUSTOMER_ID = c.CUSTOMER_ID)";
             using (SqlCommand command = connection.CreateCommand())
             {
                 command.CommandText = query;
@@ -35,11 +35,13 @@ namespace BusinessLayer.Managers
                     SqlDataReader dataReader = command.ExecuteReader();
                     while (dataReader.Read())
                     {
-                        Bestelling bestelling = new Bestelling((long)dataReader["ORDER_ID"], (DateTime)dataReader["TIME"]);
-                        
+                        Bestelling bestelling = new Bestelling((long)dataReader["ORDER_ID"], new Klant((long)dataReader["CUSTOMER_ID"], (string)dataReader["NAME"], (string)dataReader["ADDRESS"]), (DateTime)dataReader["TIME"]);
+
                         besL.Add(bestelling);
                     }
                     dataReader.Close();
+                    for (int i = 0; i < besL.Count; i++)
+                        foreach (KeyValuePair<Product, int> p in FindProducten(besL[i].BestellingId, connection)) besL[i].VoegProductToe(p.Key, p.Value);
                 }
                 catch (Exception ex)
                 {
@@ -57,7 +59,7 @@ namespace BusinessLayer.Managers
         {
             SqlConnection connection = GetConnection();
             List<Bestelling> besL = new List<Bestelling>();
-            string query = "SELECT * FROM [Bestellingssysteem].[dbo].[ORDER]";
+            string query = "SELECT * FROM [Bestellingssysteem].[dbo].[ORDER] o JOIN [Bestellingssysteem].[dbo].[CUSTOMER] c ON (o.CUSTOMER_ID = c.CUSTOMER_ID)";
             using (SqlCommand command = connection.CreateCommand())
             {
                 command.CommandText = query;
@@ -67,11 +69,13 @@ namespace BusinessLayer.Managers
                     SqlDataReader dataReader = command.ExecuteReader();
                     while (dataReader.Read())
                     {
-                        Bestelling bestelling = new Bestelling((long)dataReader["ORDER_ID"], (DateTime)dataReader["TIME"]);
+                        Bestelling bestelling = new Bestelling((long)dataReader["ORDER_ID"], new Klant((long)dataReader["CUSTOMER_ID"], (string)dataReader["NAME"], (string)dataReader["ADDRESS"]), (DateTime)dataReader["TIME"]);
                         
                         besL.Add(bestelling);
                     }
                     dataReader.Close();
+                    for (int i = 0; i < besL.Count; i++)
+                        foreach (KeyValuePair<Product, int> p in FindProducten(besL[i].BestellingId, connection)) besL[i].VoegProductToe(p.Key, p.Value);
                 }
                 catch (Exception ex)
                 {
@@ -89,7 +93,7 @@ namespace BusinessLayer.Managers
         {
 
             SqlConnection connection = GetConnection();
-            string query = "SELECT * FROM [Bestellingssysteem].[dbo].[ORDER] WHERE ORDER_ID=@id";
+            string query = "SELECT * FROM [Bestellingssysteem].[dbo].[ORDER] o JOIN [Bestellingssysteem].[dbo].[CUSTOMER] c ON (o.CUSTOMER_ID = c.CUSTOMER_ID) WHERE ORDER_ID=@id";
             using (SqlCommand command = connection.CreateCommand())
             {
                 command.Parameters.Add(new SqlParameter("@id", SqlDbType.BigInt));
@@ -100,8 +104,9 @@ namespace BusinessLayer.Managers
                 {
                     IDataReader dataReader = command.ExecuteReader();
                     dataReader.Read();
-                    Bestelling bestelling = new Bestelling((int)dataReader["ORDER_ID"], FindKlant((long)dataReader["CUSTOMER_ID"], connection) , (DateTime)dataReader["TIME"], FindProducten(id, connection));
+                    Bestelling bestelling = new Bestelling((long)dataReader["ORDER_ID"], new Klant((long)dataReader["CUSTOMER_ID"], (string)dataReader["NAME"], (string)dataReader["ADDRESS"]), (DateTime)dataReader["TIME"]);
                     dataReader.Close();
+                    foreach (KeyValuePair<Product, int> p in FindProducten(id, connection)) bestelling.VoegProductToe(p.Key, p.Value);
                     return bestelling;
                 }
                 catch (Exception ex)
@@ -220,7 +225,7 @@ namespace BusinessLayer.Managers
             if (sqlConnection is null)
                 connection = GetConnection();
             else connection = sqlConnection;
-            string query = "SELECT * FROM [Bestellingssysteem].[dbo].[CUSTOMER] WHERE CUSTOMER_ID=@id";
+            string query = "SELECT CUSTOMER_ID, NAME, ADDRESS FROM [Bestellingssysteem].[dbo].[CUSTOMER] WHERE CUSTOMER_ID=@id";
 
             using (SqlCommand command = connection.CreateCommand())
             {
@@ -287,7 +292,7 @@ namespace BusinessLayer.Managers
             if (sqlConnection is null)
                 connection = GetConnection();
             else connection = sqlConnection;
-            string query = "SELECT * FROM [Bestellingssysteem].[dbo].[ORDER_PRODUCT] WHERE ORDER_ID=@oID";
+            string query = "SELECT * FROM [Bestellingssysteem].[dbo].[ORDER_PRODUCT] op JOIN [Bestellingssysteem].[dbo].[PRODUCT] p ON (op.PRODUCT_ID = p.PRODUCT_ID) WHERE op.ORDER_ID=@oID";
 
             using (SqlCommand command = connection.CreateCommand())
             {
@@ -300,7 +305,7 @@ namespace BusinessLayer.Managers
                     IDataReader dataReader = command.ExecuteReader();
                     while (dataReader.Read())
                     {
-                        producten.Add(FindProduct((long)dataReader["PRODUCT_ID"], connection), (int)dataReader["AMOUNT"]);
+                        producten.Add(new Product((long)dataReader["PRODUCT_ID"], (string)dataReader["NAME"], (double)dataReader["PRICE"]), (int)dataReader["AMOUNT"]);
                     }
                     dataReader.Close();
 

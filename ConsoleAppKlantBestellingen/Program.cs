@@ -34,15 +34,15 @@ namespace ConsoleAppKlantBestellingen
                 x.Show();
 
 
-            bM.VoegToe(BestellingFactory.MaakBestelling(klant1,idF));
+            bM.VoegToe(BestellingFactory.MaakBestelling(kM.HaalOp(1),idF));
             bM.VoegToe(BestellingFactory.MaakBestelling(kM.HaalOp(2),idF));
 
             Bestelling b = bM.HaalOp(7);
             //b.VoegProductToe(pM.HaalOp(5001),8);
             //b.VoegProductToe(pM.HaalOp(5002), 7);
-            Console.WriteLine($"Prijs:{b.Kostprijs()}, {b.PrijsBetaald}");
-            b.ZetBetaald();
-            Console.WriteLine($"Prijs:{b.Kostprijs()}, {b.PrijsBetaald}");
+            //Console.WriteLine($"Prijs:{b.Kostprijs()}, {b.PrijsBetaald}");
+            //b.ZetBetaald();
+            //Console.WriteLine($"Prijs:{b.Kostprijs()}, {b.PrijsBetaald}");
 
             foreach (var x in bM.HaalOp()) //Console.WriteLine(x);
                 x.Show();

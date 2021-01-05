@@ -24,12 +24,12 @@ namespace BusinessLayer.Model
             Betaald = false;
         }
 
-        public Bestelling(int bestellingId, Klant klant, DateTime tijdstip) : this(bestellingId,tijdstip)
+        public Bestelling(long bestellingId, Klant klant, DateTime tijdstip) : this(bestellingId,tijdstip)
         {           
             ZetKlant(klant);
         }
 
-        public Bestelling(int bestellingId, Klant klant, DateTime tijdstip, Dictionary<Product, int> producten) : this(bestellingId, klant, tijdstip)
+        public Bestelling(long bestellingId, Klant klant, DateTime tijdstip, Dictionary<Product, int> producten) : this(bestellingId, klant, tijdstip)
         {
             if (producten is null) throw new BestellingException("producten zijn leeg");
             _producten = producten;

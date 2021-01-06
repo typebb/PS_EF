@@ -218,72 +218,7 @@ namespace BusinessLayer.Managers
                 }
             }
         }
-        public Klant FindKlant(long id, SqlConnection sqlConnection = null)
-        {
-            SqlConnection connection;
-            if (sqlConnection is null)
-                connection = GetConnection();
-            else connection = sqlConnection;
-            string query = "SELECT CUSTOMER_ID, NAME, ADDRESS FROM [Bestellingssysteem].[dbo].[CUSTOMER] WHERE CUSTOMER_ID=@id";
-
-            using (SqlCommand command = connection.CreateCommand())
-            {
-                if (connection.State != ConnectionState.Open) connection.Open();
-                try
-                {
-                    command.Parameters.Add(new SqlParameter("@id", SqlDbType.BigInt));
-                    command.CommandText = query;
-                    command.Parameters["@id"].Value = id;
-                    IDataReader dataReader = command.ExecuteReader();
-                    dataReader.Read();
-                    Klant klant = new Klant((long)dataReader["CUSTOMER_ID"], (string)dataReader["NAME"], (string)dataReader["ADDRESS"]);
-                    dataReader.Close();
-                    return klant;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
-                finally
-                {
-                    if (sqlConnection is null) connection.Close();
-                }
-            }
-            return null;
-        }
-        public Product FindProduct(long id, SqlConnection sqlConnection = null)
-        {
-            SqlConnection connection;
-            if (sqlConnection is null)
-                connection = GetConnection();
-            else connection = sqlConnection;
-            string query = "SELECT * FROM [Bestellingssysteem].[dbo].[PRODUCT] WHERE PRODUCT_ID=@id";
-
-            using (SqlCommand command = connection.CreateCommand())
-            {
-                if (connection.State != ConnectionState.Open) connection.Open();
-                try
-                {
-                    command.Parameters.Add(new SqlParameter("@id", SqlDbType.BigInt));
-                    command.CommandText = query;
-                    command.Parameters["@id"].Value = id;
-                    IDataReader dataReader = command.ExecuteReader();
-                    dataReader.Read();
-                    Product p = new Product((long)dataReader["PRODUCT_ID"], (string)dataReader["NAME"], (double)dataReader["PRICE"]);
-                    dataReader.Close();
-                    return p;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
-                finally
-                {
-                    if (sqlConnection is null) connection.Close();
-                }
-            }
-            return null;
-        }
+        
         public Dictionary<Product, int> FindProducten(long id, SqlConnection sqlConnection = null)
         {
             Dictionary<Product, int> producten = new Dictionary<Product, int>();

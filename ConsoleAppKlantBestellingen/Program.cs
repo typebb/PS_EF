@@ -25,15 +25,15 @@ namespace ConsoleAppKlantBestellingen
             pM.VoegToe(new Product("product 2", 12.0));
             pM.VoegToe(new Product("product 3", 13.0));
             foreach (var x in pM.HaalOp()) Console.WriteLine(x);
+
             Console.WriteLine("-----------------");
-            //Klant klant1 = KlantFactory.MaakKlant("klant 1", "adres 1", idF);
-            //Klant klant2 = KlantFactory.MaakKlant("klant 2", "adres 2", idF);
+
             kM.VoegToe(new Klant("klant 1", "adres 1"));
             kM.VoegToe(new Klant("klant 2", "adres 2"));
-            //kM.VoegToe(klant1);
-            //kM.VoegToe(klant2);
             foreach (var x in kM.HaalOp()) //Console.WriteLine(x);
                 x.Show();
+
+
             Console.WriteLine("-----------------");
 
             bM.VoegToe(new Bestelling(0, kM.HaalOp().Last(), DateTime.Now, new Dictionary<Product, int> { { pM.HaalOp("product 1"), 1 }, { pM.HaalOp("product 2"), 2 } }));
@@ -48,16 +48,26 @@ namespace ConsoleAppKlantBestellingen
 
             foreach (var x in bM.HaalOp()) //Console.WriteLine(x);
                 x.Show();
-            //foreach (var x in kM.HaalOp()) //Console.WriteLine(x);
-            //    x.Show();
-            Console.WriteLine("-----------------");
-            foreach (var x in kM.HaalOp()) //Console.WriteLine(x);
-                x.Show();
-            Console.WriteLine("-----------------");
-            //lant k1 = kM.HaalOp(1);
-            //k1.Show();
-            //k1.VoegToeBestelling(b);
-            //k1.Show();
+            
+            /*
+            Console.WriteLine("--------HAALOP() met DELEGATE---------");
+            foreach (var x in pM.HaalOp(k => k.Naam.Contains('1'))) //Console.WriteLine(x);
+                Console.WriteLine(x);
+            */
+
+            /*
+            Console.WriteLine("-------VERWIJDER PRODUCT----------");
+            pM.Verwijder(pM.HaalOp().Last());
+            foreach (var x in pM.HaalOp()) Console.WriteLine(x);
+
+            Console.WriteLine("-------VERWIJDER KLANT----------");
+            kM.Verwijder(kM.HaalOp().Last());
+            foreach (var x in kM.HaalOp()) Console.WriteLine(x);
+
+            Console.WriteLine("-------VERWIJDER BESTELLING----------");
+            bM.Verwijder(bM.HaalOp().Last());
+            foreach (var x in bM.HaalOp()) Console.WriteLine(x);
+            */
         }
     }
 }

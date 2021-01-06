@@ -7,7 +7,7 @@ using System;
 
 namespace BusinessLayer.Managers
 {
-    public class ProductManager: IManager<Product>
+    public class ProductManager : IManager<Product>, IProductManager
     {
         private Dictionary<string, Product> _producten = new Dictionary<string, Product>();
 
@@ -60,7 +60,7 @@ namespace BusinessLayer.Managers
 
         public Product HaalOp(long productId)
         {
-            if (!_producten.Values.Any(x=>x.ProductId==productId))
+            if (!_producten.Values.Any(x => x.ProductId == productId))
             {
                 throw new ProductManagerException("GeefProduct");
             }
@@ -69,5 +69,5 @@ namespace BusinessLayer.Managers
                 return _producten.Values.First(x => x.ProductId == productId);
             }
         }
-    } 
+    }
 }

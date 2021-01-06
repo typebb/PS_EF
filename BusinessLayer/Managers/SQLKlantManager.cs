@@ -39,6 +39,9 @@ namespace BusinessLayer.Managers
                         klantL.Add(klant);
                     }
                     dataReader.Close();
+                    for (int i = 0; i < klantL.Count; i++)
+                        foreach (Bestelling b in FindBestellingen(klantL[i], connection))
+                            if (!klantL[i].HeeftBestelling(b)) klantL[i].VoegToeBestelling(b);
                 }
                 catch (Exception ex)
                 {
@@ -70,6 +73,9 @@ namespace BusinessLayer.Managers
                         klantL.Add(klant);
                     }
                     dataReader.Close();
+                    for (int i = 0; i < klantL.Count; i++)
+                        foreach (Bestelling b in FindBestellingen(klantL[i], connection))
+                            if (!klantL[i].HeeftBestelling(b)) klantL[i].VoegToeBestelling(b);
                 }
                 catch (Exception ex)
                 {
@@ -99,6 +105,8 @@ namespace BusinessLayer.Managers
                     dataReader.Read();
                     Klant klant = new Klant((long)dataReader["CUSTOMER_ID"], (string)dataReader["NAME"], (string)dataReader["ADDRESS"]);
                     dataReader.Close();
+                    foreach (Bestelling b in FindBestellingen(klant, connection))
+                        if (!klant.HeeftBestelling(b)) klant.VoegToeBestelling(b);
                     return klant;
                 }
                 catch (Exception ex)
@@ -167,6 +175,81 @@ namespace BusinessLayer.Managers
                     connection.Close();
                 }
             }
+        }
+        public List<Bestelling> FindBestellingen(Klant klant, SqlConnection sqlConnection = null)
+        {
+            List<Bestelling> bestellingen = new List<Bestelling>();
+            SqlConnection connection;
+            if (sqlConnection is null)
+                connection = GetConnection();
+            else connection = sqlConnection;
+            string query = "SELECT * FROM [Bestellingssysteem].[dbo].[ORDER] WHERE CUSTOMER_ID=@oID";
+
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                if (connection.State != ConnectionState.Open) connection.Open();
+                try
+                {
+                    command.Parameters.Add(new SqlParameter("@oID", SqlDbType.BigInt));
+                    command.CommandText = query;
+                    command.Parameters["@oID"].Value = klant.KlantId;
+                    IDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        bestellingen.Add(new Bestelling((long)dataReader["ORDER_ID"], klant, (DateTime)dataReader["TIME"]));
+                    }
+                    dataReader.Close();
+                    for (int i = 0; i < bestellingen.Count; i++)
+                        foreach (KeyValuePair<Product, int> p in FindProducten(bestellingen[i].BestellingId, connection)) bestellingen[i].VoegProductToe(p.Key, p.Value);
+                    return bestellingen;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                finally
+                {
+                    if (sqlConnection is null) connection.Close();
+                }
+            }
+            return null;
+        }
+        public Dictionary<Product, int> FindProducten(long id, SqlConnection sqlConnection = null)
+        {
+            Dictionary<Product, int> producten = new Dictionary<Product, int>();
+            SqlConnection connection;
+            if (sqlConnection is null)
+                connection = GetConnection();
+            else connection = sqlConnection;
+            string query = "SELECT * FROM [Bestellingssysteem].[dbo].[ORDER_PRODUCT] op JOIN [Bestellingssysteem].[dbo].[PRODUCT] p ON (op.PRODUCT_ID = p.PRODUCT_ID) WHERE op.ORDER_ID=@oID";
+
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                if (connection.State != ConnectionState.Open) connection.Open();
+                try
+                {
+                    command.Parameters.Add(new SqlParameter("@oID", SqlDbType.BigInt));
+                    command.CommandText = query;
+                    command.Parameters["@oID"].Value = id;
+                    IDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        producten.Add(new Product((long)dataReader["PRODUCT_ID"], (string)dataReader["NAME"], Convert.ToDouble(dataReader["PRICE"])), (int)dataReader["AMOUNT"]);
+                    }
+                    dataReader.Close();
+
+                    return producten;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                finally
+                {
+                    if (sqlConnection is null) connection.Close();
+                }
+            }
+            return null;
         }
     }
 }

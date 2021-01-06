@@ -70,7 +70,6 @@ namespace BusinessLayer.Managers
                     while (dataReader.Read())
                     {
                         Bestelling bestelling = new Bestelling((long)dataReader["ORDER_ID"], new Klant((long)dataReader["CUSTOMER_ID"], (string)dataReader["NAME"], (string)dataReader["ADDRESS"]), (DateTime)dataReader["TIME"]);
-                        
                         besL.Add(bestelling);
                     }
                     dataReader.Close();
@@ -172,7 +171,7 @@ namespace BusinessLayer.Managers
                     command.Parameters["@betaald"].Value = anItem.PrijsBetaald;
                     command.Parameters["@prijs"].Value = (decimal)anItem.Kostprijs();
                     long orderID = (long)command.ExecuteScalar();
-                    if (anItem.GeefProducten().Count != 0) VoegProductenToe(anItem, orderID, connection);
+                    if (anItem.GeefProducten().Count > 0) VoegProductenToe(anItem, orderID, connection);
                 }
                 catch (Exception ex)
                 {
@@ -305,7 +304,7 @@ namespace BusinessLayer.Managers
                     IDataReader dataReader = command.ExecuteReader();
                     while (dataReader.Read())
                     {
-                        producten.Add(new Product((long)dataReader["PRODUCT_ID"], (string)dataReader["NAME"], (double)dataReader["PRICE"]), (int)dataReader["AMOUNT"]);
+                        producten.Add(new Product((long)dataReader["PRODUCT_ID"], (string)dataReader["NAME"], Convert.ToDouble(dataReader["PRICE"])), (int)dataReader["AMOUNT"]);
                     }
                     dataReader.Close();
 

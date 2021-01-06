@@ -10,7 +10,7 @@ using System.Text;
 
 namespace BusinessLayer.Managers
 {
-    public class SQLProductManager : IManager<Product>
+    public class SQLProductManager : IManager<Product>, IProductManager
     {
         private string connectionString;
         public SQLProductManager(string connectionS)
@@ -118,7 +118,7 @@ namespace BusinessLayer.Managers
             string query = "SELECT * FROM [Bestellingssysteem].[dbo].[PRODUCT] WHERE NAME=@naam";
             using (SqlCommand command = connection.CreateCommand())
             {
-                command.Parameters.Add(new SqlParameter("@naam", SqlDbType.BigInt));
+                command.Parameters.Add(new SqlParameter("@naam", SqlDbType.NVarChar));
                 command.CommandText = query;
                 command.Parameters["@naam"].Value = naam;
                 connection.Open();
@@ -184,7 +184,7 @@ namespace BusinessLayer.Managers
                     command.CommandText = query;
                     //command.Parameters["@id"].Value = anItem.ProductId;
                     command.Parameters["@naam"].Value = anItem.Naam;
-                    command.Parameters["@prijs"].Value = anItem.Prijs;
+                    command.Parameters["@prijs"].Value = (decimal)anItem.Prijs;
                     command.ExecuteNonQuery();
                 }
                 catch (Exception ex)

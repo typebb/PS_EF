@@ -39,12 +39,9 @@ namespace ConsoleAppKlantBestellingen
             bM.VoegToe(new Bestelling(0, kM.HaalOp().Last(), DateTime.Now, new Dictionary<Product, int> { { pM.HaalOp("product 1"), 1 }, { pM.HaalOp("product 2"), 2 } }));
             bM.VoegToe(new Bestelling(0, kM.HaalOp().Last(), DateTime.Now, new Dictionary<Product, int> { { pM.HaalOp("product 1"), 4 }, { pM.HaalOp("product 3"), 3 } }));
 
-            
-            //b.VoegProductToe(pM.HaalOp(5002), 7);
-            //Console.WriteLine($"Prijs:{b.Kostprijs()}, {b.PrijsBetaald}");
-            //b.ZetBetaald();
-            //Console.WriteLine($"Prijs:{b.Kostprijs()}, {b.PrijsBetaald}");
 
+            /*
+            Console.WriteLine("--------VOEGTOE() BESTELLING UPDATE---------");
             foreach (var x in bM.HaalOp()) //Console.WriteLine(x);
                 x.Show();
             Console.WriteLine("-----------------");
@@ -53,6 +50,19 @@ namespace ConsoleAppKlantBestellingen
             bM.VoegToe(b);
             foreach (var x in bM.HaalOp()) //Console.WriteLine(x);
                 x.Show();
+            */
+            Console.WriteLine("--------VOEGTOE() KLANT UPDATE---------");
+            foreach (var x in kM.HaalOp()) //Console.WriteLine(x);
+                x.Show();
+            Console.WriteLine("-----------------");
+            Klant k = kM.HaalOp().Last();
+            Bestelling b = bM.HaalOp().Last();
+            
+            k.VoegToeBestelling(bM.HaalOp().Last());
+            kM.VoegToe(k);
+            foreach (var x in kM.HaalOp()) //Console.WriteLine(x);
+                x.Show();
+
             /*
             Console.WriteLine("--------HAALOP() met DELEGATE---------");
             foreach (var x in pM.HaalOp(k => k.Naam.Contains('1'))) //Console.WriteLine(x);

@@ -200,14 +200,20 @@ namespace BusinessLayer.Managers
                     if (HeeftKlant(anItem.KlantId, connection) == false)
                     {
                         command.CommandText = query;
+                        command.ExecuteNonQuery();
+                        if (anItem.GetBestellingen().Count > 0)
+                            VoegBestellingenToe(anItem.GetBestellingen(), anItem, connection);
                     }
                     else
                     {
                         command.CommandText = queryU;
                         command.Parameters.Add(new SqlParameter("@id", SqlDbType.BigInt));
                         command.Parameters["@id"].Value = anItem.KlantId;
+                        command.ExecuteNonQuery();
+                        if (anItem.GetBestellingen().Count > 0)
+                            VoegBestellingenToe(anItem.GetBestellingen(), anItem, connection);
                     }
-                    command.ExecuteNonQuery();
+                    
                 }
                 catch (Exception ex)
                 {
@@ -216,6 +222,61 @@ namespace BusinessLayer.Managers
                 finally
                 {
                     connection.Close();
+                }
+            }
+        }
+        
+        private void VoegBestellingenToe(IEnumerable<Bestelling> lijst, Klant klant, SqlConnection sqlConnection = null)
+        {
+            SqlConnection connection;
+            if (sqlConnection is null)
+                connection = GetConnection();
+            else connection = sqlConnection;
+            string query = "INSERT INTO [Bestellingssysteem].[dbo].[ORDER](TIME,CUSTOMER_ID,PAID,PRICE) output INSERTED.ORDER_ID VALUES(@tijd,@klantId,@betaald,@prijs)";
+            string queryU = "UPDATE [Bestellingssysteem].[dbo].[ORDER] SET TIME = @tijd, CUSTOMER_ID = @klantId, PAID = @betaald, PRICE = @prijs WHERE ORDER_ID = @id";
+
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                if (connection.State != ConnectionState.Open) connection.Open();
+                try
+                {
+                    command.Parameters.Add(new SqlParameter("@tijd", SqlDbType.DateTime));
+                    command.Parameters.Add(new SqlParameter("@klantId", SqlDbType.BigInt));
+                    command.Parameters.Add(new SqlParameter("@betaald", SqlDbType.Int));
+                    command.Parameters.Add(new SqlParameter("@prijs", SqlDbType.Decimal));
+                    List<Bestelling> checkL = FindBestellingen(klant, connection);
+                    foreach (Bestelling b in lijst)
+                    {
+                        command.Parameters["@tijd"].Value = b.Tijdstip;
+                        command.Parameters["@klantId"].Value = b.Klant.KlantId;
+                        command.Parameters["@betaald"].Value = b.PrijsBetaald;
+                        command.Parameters["@prijs"].Value = (decimal)b.Kostprijs();
+                        long orderID;
+                        if (!checkL.Contains(b))
+                        {
+                            command.CommandText = query;
+                            orderID = (long)command.ExecuteScalar();
+                            if (b.GeefProducten().Count > 0)
+                                VoegProductenToe(b.GeefProducten(), orderID, connection);
+                        }
+                        else
+                        {
+                            command.Parameters.Add(new SqlParameter("@id", SqlDbType.BigInt));
+                            command.Parameters["@id"].Value = b.BestellingId;
+                            command.CommandText = queryU;
+                            command.ExecuteNonQuery();
+                            if (b.GeefProducten().Count > 0)
+                                VoegProductenToe(b.GeefProducten(), b.BestellingId, connection);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                finally
+                {
+                    if (sqlConnection is null) connection.Close();
                 }
             }
         }
@@ -293,6 +354,46 @@ namespace BusinessLayer.Managers
                 }
             }
             return null;
+        }
+        private void VoegProductenToe(IEnumerable<KeyValuePair<Product, int>> lijst, long orderID, SqlConnection sqlConnection = null)
+        {
+            SqlConnection connection;
+            if (sqlConnection is null)
+                connection = GetConnection();
+            else connection = sqlConnection;
+            string query = "INSERT INTO [Bestellingssysteem].[dbo].[ORDER_PRODUCT](ORDER_ID, PRODUCT_ID, AMOUNT) VALUES(@oID,@pID,@amount)";
+            string queryU = "UPDATE [Bestellingssysteem].[dbo].[ORDER_PRODUCT] SET ORDER_ID = @oID, PRODUCT_ID = @pID, AMOUNT = @amount WHERE ORDER_ID = @oID AND PRODUCT_ID = @pID";
+
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                if (connection.State != ConnectionState.Open) connection.Open();
+                try
+                {
+                    command.Parameters.Add(new SqlParameter("@oID", SqlDbType.BigInt));
+                    command.Parameters.Add(new SqlParameter("@pID", SqlDbType.BigInt));
+                    command.Parameters.Add(new SqlParameter("@amount", SqlDbType.Int));
+
+                    Dictionary<Product, int> checkL = FindProducten(orderID, connection);
+                    foreach (KeyValuePair<Product, int> p in lijst)
+                    {
+                        if (checkL.ContainsKey(p.Key))
+                            command.CommandText = queryU;
+                        else command.CommandText = query;
+                        command.Parameters["@oID"].Value = orderID;
+                        command.Parameters["@pID"].Value = p.Key.ProductId;
+                        command.Parameters["@amount"].Value = p.Value;
+                        command.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                finally
+                {
+                    if (sqlConnection is null) connection.Close();
+                }
+            }
         }
     }
 }

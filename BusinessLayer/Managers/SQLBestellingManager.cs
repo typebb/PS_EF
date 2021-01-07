@@ -210,7 +210,8 @@ namespace BusinessLayer.Managers
                     {
                         command.CommandText = queryS;
                         orderID = (long)command.ExecuteScalar();
-                        if (anItem.GeefProducten().Count > 0) VoegProductenToe(anItem.GeefProducten(), orderID, connection);
+                        if (anItem.GeefProducten().Count > 0)
+                            VoegProductenToe(anItem.GeefProducten(), orderID, connection);
                     }
                     else
                     {

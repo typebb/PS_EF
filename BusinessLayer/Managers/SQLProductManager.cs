@@ -189,7 +189,7 @@ namespace BusinessLayer.Managers
                 if (connection.State != ConnectionState.Open) connection.Open();
                 try
                 {
-                    command.Parameters.Add(new SqlParameter("@naam", SqlDbType.BigInt));
+                    command.Parameters.Add(new SqlParameter("@naam", SqlDbType.NVarChar));
                     command.CommandText = query;
                     command.Parameters["@naam"].Value = naam;
                     int n = (int)command.ExecuteScalar();

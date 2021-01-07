@@ -46,6 +46,7 @@ namespace BusinessLayer.Managers
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex);
+                    return null;
                 }
                 finally
                 {
@@ -80,6 +81,7 @@ namespace BusinessLayer.Managers
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex);
+                    return null;
                 }
                 finally
                 {
@@ -101,6 +103,8 @@ namespace BusinessLayer.Managers
                 connection.Open();
                 try
                 {
+                    if (HeeftKlant(id, connection) == false)
+                        return null;
                     IDataReader dataReader = command.ExecuteReader();
                     dataReader.Read();
                     Klant klant = new Klant((long)dataReader["CUSTOMER_ID"], (string)dataReader["NAME"], (string)dataReader["ADDRESS"]);
@@ -119,6 +123,36 @@ namespace BusinessLayer.Managers
                     connection.Close();
                 }
             }
+        }
+        private bool HeeftKlant(long id, SqlConnection sqlConnection = null)
+        {
+            SqlConnection connection;
+            if (sqlConnection is null)
+                connection = GetConnection();
+            else connection = sqlConnection;
+            string query = "SELECT count(*) FROM [Bestellingssysteem].[dbo].[CUSTOMER] WHERE CUSTOMER_ID=@id";
+
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                if (connection.State != ConnectionState.Open) connection.Open();
+                try
+                {
+                    command.Parameters.Add(new SqlParameter("@id", SqlDbType.BigInt));
+                    command.CommandText = query;
+                    command.Parameters["@id"].Value = id;
+                    int n = (int)command.ExecuteScalar();
+                    if (n > 0) return true; else return false;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                finally
+                {
+                    if (sqlConnection is null) connection.Close();
+                }
+            }
+            return false;
         }
 
         public void Verwijder(Klant anItem)
@@ -151,19 +185,28 @@ namespace BusinessLayer.Managers
         {
             SqlConnection connection = GetConnection();
             string query = "INSERT INTO [Bestellingssysteem].[dbo].[CUSTOMER](NAME,ADDRESS) VALUES(@naam,@adres)";
+            string queryU = "UPDATE [Bestellingssysteem].[dbo].[CUSTOMER] SET NAME = @naam, ADDRESS = @adres WHERE CUSTOMER_ID = @id";
 
             using (SqlCommand command = connection.CreateCommand())
             {
                 connection.Open();
                 try
                 {
-                    //command.Parameters.Add(new SqlParameter("@id", SqlDbType.BigInt));
                     command.Parameters.Add(new SqlParameter("@naam", SqlDbType.NVarChar));
                     command.Parameters.Add(new SqlParameter("@adres", SqlDbType.NVarChar));
-                    command.CommandText = query;
-                    //command.Parameters["@id"].Value = anItem.KlantId;
+
                     command.Parameters["@naam"].Value = anItem.Naam;
                     command.Parameters["@adres"].Value = anItem.Adres;
+                    if (HeeftKlant(anItem.KlantId, connection) == false)
+                    {
+                        command.CommandText = query;
+                    }
+                    else
+                    {
+                        command.CommandText = queryU;
+                        command.Parameters.Add(new SqlParameter("@id", SqlDbType.BigInt));
+                        command.Parameters["@id"].Value = anItem.KlantId;
+                    }
                     command.ExecuteNonQuery();
                 }
                 catch (Exception ex)
@@ -176,7 +219,7 @@ namespace BusinessLayer.Managers
                 }
             }
         }
-        public List<Bestelling> FindBestellingen(Klant klant, SqlConnection sqlConnection = null)
+        private List<Bestelling> FindBestellingen(Klant klant, SqlConnection sqlConnection = null)
         {
             List<Bestelling> bestellingen = new List<Bestelling>();
             SqlConnection connection;
@@ -214,7 +257,7 @@ namespace BusinessLayer.Managers
             }
             return null;
         }
-        public Dictionary<Product, int> FindProducten(long id, SqlConnection sqlConnection = null)
+        private Dictionary<Product, int> FindProducten(long id, SqlConnection sqlConnection = null)
         {
             Dictionary<Product, int> producten = new Dictionary<Product, int>();
             SqlConnection connection;

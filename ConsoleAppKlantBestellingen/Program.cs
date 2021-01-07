@@ -39,8 +39,7 @@ namespace ConsoleAppKlantBestellingen
             bM.VoegToe(new Bestelling(0, kM.HaalOp().Last(), DateTime.Now, new Dictionary<Product, int> { { pM.HaalOp("product 1"), 1 }, { pM.HaalOp("product 2"), 2 } }));
             bM.VoegToe(new Bestelling(0, kM.HaalOp().Last(), DateTime.Now, new Dictionary<Product, int> { { pM.HaalOp("product 1"), 4 }, { pM.HaalOp("product 3"), 3 } }));
 
-            //Bestelling b = bM.HaalOp(1);
-            //b.VoegProductToe(pM.HaalOp(5001),8);
+            
             //b.VoegProductToe(pM.HaalOp(5002), 7);
             //Console.WriteLine($"Prijs:{b.Kostprijs()}, {b.PrijsBetaald}");
             //b.ZetBetaald();
@@ -48,7 +47,12 @@ namespace ConsoleAppKlantBestellingen
 
             foreach (var x in bM.HaalOp()) //Console.WriteLine(x);
                 x.Show();
-            
+            Console.WriteLine("-----------------");
+            Bestelling b = bM.HaalOp().Last();
+            b.VoegProductToe(pM.HaalOp().Last(), 8);
+            bM.VoegToe(b);
+            foreach (var x in bM.HaalOp()) //Console.WriteLine(x);
+                x.Show();
             /*
             Console.WriteLine("--------HAALOP() met DELEGATE---------");
             foreach (var x in pM.HaalOp(k => k.Naam.Contains('1'))) //Console.WriteLine(x);

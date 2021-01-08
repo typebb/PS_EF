@@ -144,6 +144,9 @@
   <data name="NameTag" xml:space="preserve">
     <value>Naam: </value>
   </data>
+  <data name="NewOrder" xml:space="preserve">
+    <value>Nieuwe Bestelling...</value>
+  </data>
   <data name="OrderID" xml:space="preserve">
     <value>Bestelling nummer</value>
   </data>
@@ -155,6 +158,9 @@
   </data>
   <data name="PriceTag" xml:space="preserve">
     <value>Prijs: </value>
+  </data>
+  <data name="ProductCount" xml:space="preserve">
+    <value>Aantal Producten: </value>
   </data>
   <data name="Remove" xml:space="preserve">
     <value>Verwijder</value>

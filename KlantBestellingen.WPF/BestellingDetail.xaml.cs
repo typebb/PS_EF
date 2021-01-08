@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Model;
+using KlantBestellingen.WPF.EventARGS;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,6 +21,11 @@ namespace KlantBestellingen.WPF
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
+        public event EventHandler<BestellingEventArgs> Updated;
+        public void Update(Bestelling bes)
+        {
+            this.Updated?.Invoke(this, new BestellingEventArgs { bestelling = bes});
+        }
 
         #region Properties
         // Belangrijk: in WPF moet iets dat in XAML gebruikt wordt, een public property zijn:
@@ -127,6 +133,7 @@ namespace KlantBestellingen.WPF
                 }
                 DgProducts.ItemsSource = _orderProducts;
                 NotifyPropertyChanged("Order");
+                NotifyPropertyChanged("TotalPrice");
             }
         }
         #endregion
@@ -166,6 +173,7 @@ namespace KlantBestellingen.WPF
                 Betaald = (bool)CbPrijs.IsChecked//, PrijsBetaald = total
             };
             Context.BestellingManager.VoegToe(_order);
+            Update(_order);
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)

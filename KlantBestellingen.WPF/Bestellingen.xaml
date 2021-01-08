@@ -22,7 +22,7 @@
                 <!-- we linken ons aan een property van de class Klant: -->
                 <DataGridTextColumn Header="{x:Static langs:Translations.Name}" Binding="{Binding Klant.Naam}" MinWidth="150"/>
                 <DataGridTextColumn Header="{x:Static langs:Translations.Address}" Binding="{Binding Klant.Adres}" MinWidth="150"/>
-                <DataGridTextColumn  Header="{x:Static langs:Translations.Price}" Binding="{Binding PrijsBetaald}" MinWidth="150"/>
+                <DataGridTextColumn  Header="{x:Static langs:Translations.Price}" Binding="{Binding Prijs}" MinWidth="150"/>
                 <DataGridTextColumn Header="{x:Static langs:Translations.Time}" Binding="{Binding Tijdstip}" MinWidth="150"/>
                 
                 <!--                

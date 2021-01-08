@@ -58,21 +58,21 @@
             <TextBox x:Name="tbKlant" Grid.Row="0" Grid.Column="1" Margin="5" MinWidth="250" KeyUp="TextBox_KeyUp" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
             <ComboBox x:Name="cbKlanten" Grid.Row="0" Grid.Column="2" Margin="5" DisplayMemberPath="Naam" SelectedValuePath="Naam" VerticalAlignment="Center" SelectionChanged="ComboBox_SelectionChanged"/>
             <Label x:Name="lblBestellingen" Grid.Row="1" Grid.Column="0" Margin="5" Content="Bestellingen: "/>
-            <DataGrid x:Name="dgOrderSelection" Grid.Row="2" Grid.ColumnSpan="3" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="True" AlternatingRowBackground="#FFB9BBFF" IsReadOnly="True" MouseDoubleClick="dgOrderSelection_MouseDoubleClick">
+            <DataGrid x:Name="dgOrderSelection" Grid.Row="2" Grid.ColumnSpan="3" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="True" AlternatingRowBackground="#FFB9BBFF" IsReadOnly="True" MouseDoubleClick="dgOrderSelection_MouseDoubleClick" SelectionChanged="dgOrderSelection_SelectionChanged">
                 <DataGrid.Columns>
                     <!-- we linken ons aan een property van de class Klant: -->
                     <DataGridTextColumn  Header="{x:Static langs:Translations.OrderID}" Binding="{Binding BestellingId}" MinWidth="200"/>
                     <DataGridTextColumn  Header="{x:Static langs:Translations.Payed}" Binding="{Binding Betaald}" MinWidth="200"/>
                     <DataGridTextColumn  Header="{x:Static langs:Translations.Time}" Binding="{Binding Tijdstip}" MinWidth="200"/>
-                    <DataGridTextColumn  Header="{x:Static langs:Translations.Price}" Binding="{Binding PrijsBetaald}" MinWidth="200"/>
+                    <DataGridTextColumn  Header="{x:Static langs:Translations.Price}" Binding="{Binding Prijs}" MinWidth="200"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <Button Grid.Row="3" Grid.Column="2" Content="Nieuwe bestelling..." Click="MaakBestelling_Click" HorizontalAlignment="Right" Margin="5"/>
+            <Button x:Name="BtnNieuweBestelling" Grid.Row="3" Grid.Column="2" Content="{x:Static langs:Translations.NewOrder}" Click="MaakBestelling_Click" HorizontalAlignment="Right" Margin="5" IsEnabled="False"/>
         </Grid>
         <DockPanel Grid.Row="2">
             <StatusBar DockPanel.Dock="Bottom">
                 <StatusBarItem>
-                    <TextBlock Name="TbStatusInformation" />
+                    <TextBlock Name="TbStatusInformation"/>
                 </StatusBarItem>
             </StatusBar>
         </DockPanel>

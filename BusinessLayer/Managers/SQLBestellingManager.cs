@@ -37,6 +37,7 @@ namespace BusinessLayer.Managers
                     {
                         Bestelling bestelling = new Bestelling((long)dataReader["ORDER_ID"], new Klant((long)dataReader["CUSTOMER_ID"], (string)dataReader["NAME"], (string)dataReader["ADDRESS"]), (DateTime)dataReader["TIME"]);
                         if ((int)dataReader["PAID"] > 0) bestelling.ZetBetaald();
+                        if ((decimal)dataReader["PRICE"] > 0) bestelling.Prijs = (decimal)dataReader["PRICE"];
                         besL.Add(bestelling);
                     }
                     dataReader.Close();
@@ -74,6 +75,7 @@ namespace BusinessLayer.Managers
                     {
                         Bestelling bestelling = new Bestelling((long)dataReader["ORDER_ID"], new Klant((long)dataReader["CUSTOMER_ID"], (string)dataReader["NAME"], (string)dataReader["ADDRESS"]), (DateTime)dataReader["TIME"]);
                         if ((int)dataReader["PAID"] > 0) bestelling.ZetBetaald();
+                        if ((decimal)dataReader["PRICE"] > 0) bestelling.Prijs = (decimal)dataReader["PRICE"];
                         besL.Add(bestelling);
                     }
                     dataReader.Close();
@@ -114,6 +116,7 @@ namespace BusinessLayer.Managers
                     dataReader.Read();
                     Bestelling bestelling = new Bestelling((long)dataReader["ORDER_ID"], new Klant((long)dataReader["CUSTOMER_ID"], (string)dataReader["NAME"], (string)dataReader["ADDRESS"]), (DateTime)dataReader["TIME"]);
                     if ((int)dataReader["PAID"] > 0) bestelling.ZetBetaald();
+                    if ((decimal)dataReader["PRICE"] > 0) bestelling.Prijs = (decimal)dataReader["PRICE"];
                     dataReader.Close();
                     foreach (KeyValuePair<Product, int> p in FindProducten(id, connection)) bestelling.VoegProductToe(p.Key, p.Value);
                     

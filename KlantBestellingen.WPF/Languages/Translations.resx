@@ -144,6 +144,9 @@
   <data name="NameTag" xml:space="preserve">
     <value>Name: </value>
   </data>
+  <data name="NewOrder" xml:space="preserve">
+    <value>New Order...</value>
+  </data>
   <data name="OrderID" xml:space="preserve">
     <value>Order ID</value>
   </data>
@@ -155,6 +158,9 @@
   </data>
   <data name="PriceTag" xml:space="preserve">
     <value>Price: </value>
+  </data>
+  <data name="ProductCount" xml:space="preserve">
+    <value>Product Count: </value>
   </data>
   <data name="Remove" xml:space="preserve">
     <value>Remove</value>

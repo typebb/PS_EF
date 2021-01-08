@@ -12,6 +12,7 @@ namespace BusinessLayer.Model
         public double PrijsBetaald { get; set; }
         public Klant Klant { get; set; } // FK
         public DateTime Tijdstip { get; private set; } = DateTime.Now;
+        public decimal Prijs { get; set; }
 
         private Dictionary<Product, int> _producten = new Dictionary<Product, int>(); // FK
         #endregion

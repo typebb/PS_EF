@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using BusinessLayer.Model;
+using KlantBestellingen.WPF.Languages;
 
 namespace KlantBestellingen.WPF
 {
@@ -27,6 +28,7 @@ namespace KlantBestellingen.WPF
             _productsWindow.Closing += _Window_Closing;
             _bestellingDetailWindow.Closing += _Window_Closing;
             _bestellingWindow.Closing += _Window_Closing;
+            _bestellingDetailWindow.Updated += Refresh;
         }
 
         /// <summary>
@@ -121,11 +123,13 @@ namespace KlantBestellingen.WPF
                 // Indien er een klant geselecteerd is, dan tonen we de bestellingen van die klant
                 var bestellingen = Context.BestellingManager.HaalOp(b => b.Klant.Equals(cbKlanten.SelectedItem));
                 dgOrderSelection.ItemsSource = bestellingen;
+                BtnNieuweBestelling.IsEnabled = true;
             }
             else
             {
                 // Indien er geen klant geselecteerd is, tonen we geen bestellingen
                 dgOrderSelection.ItemsSource = null;
+                BtnNieuweBestelling.IsEnabled = false;
             }
         }
 
@@ -147,6 +151,12 @@ namespace KlantBestellingen.WPF
             _bestellingDetailWindow.Klant = cbKlanten.SelectedItem as BusinessLayer.Model.Klant;
             _bestellingDetailWindow.Order = dgOrderSelection.SelectedItem as BusinessLayer.Model.Bestelling;
             _bestellingDetailWindow.Show();
+        }
+
+        private void dgOrderSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dgOrderSelection.SelectedItem != null)
+                TbStatusInformation.Text = Translations.ProductCount + (dgOrderSelection.SelectedItem as BusinessLayer.Model.Bestelling).GeefProducten().Count.ToString();
         }
     }
 }

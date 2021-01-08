@@ -142,6 +142,15 @@ namespace KlantBestellingen.WPF.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Order....
+        /// </summary>
+        public static string NewOrder {
+            get {
+                return ResourceManager.GetString("NewOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Order ID.
         /// </summary>
         public static string OrderID {
@@ -174,6 +183,15 @@ namespace KlantBestellingen.WPF.Languages {
         public static string PriceTag {
             get {
                 return ResourceManager.GetString("PriceTag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product Count: .
+        /// </summary>
+        public static string ProductCount {
+            get {
+                return ResourceManager.GetString("ProductCount", resourceCulture);
             }
         }
         

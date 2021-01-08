@@ -273,6 +273,8 @@ namespace BusinessLayer.Managers
                         command.Parameters["@amount"].Value = p.Value;
                         command.ExecuteNonQuery();
                     }
+                    foreach (KeyValuePair<Product, int> l in checkL)
+                        if (!lijst.Contains(l)) DeleteProduct(orderID, l.Key, l.Value);
                 }
                 catch (Exception ex)
                 {
@@ -321,6 +323,39 @@ namespace BusinessLayer.Managers
                 }
             }
             return null;
+        }
+        private void DeleteProduct(long orderID, Product product, int am)
+        {
+            SqlConnection connection = GetConnection();
+            string query = "DELETE FROM [Bestellingssysteem].[dbo].[ORDER_PRODUCT] WHERE PRODUCT_ID=@id AND ORDER_ID=@oID";
+            string queryU = "UPDATE [Bestellingssysteem].[dbo].[ORDER_PRODUCT] SET AMOUNT = @amount WHERE ORDER_ID = @oID AND PRODUCT_ID = @pID";
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                connection.Open();
+                try
+                {
+                    command.Parameters.Add(new SqlParameter("@id", SqlDbType.BigInt));
+                    command.Parameters.Add(new SqlParameter("@oID", SqlDbType.BigInt));
+                    command.CommandText = query;
+                    command.Parameters["@id"].Value = product.ProductId;
+                    command.Parameters["@oID"].Value = orderID;
+                    if (am > 1)
+                    {
+                        command.Parameters.Add(new SqlParameter("@amount", SqlDbType.BigInt));
+                        command.Parameters["@amount"].Value = am - 1;
+                        command.CommandText = queryU;
+                    }
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
         }
     }
 }

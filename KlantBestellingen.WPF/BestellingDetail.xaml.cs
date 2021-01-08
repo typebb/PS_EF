@@ -178,9 +178,9 @@ namespace KlantBestellingen.WPF
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            if (CbProducts.SelectedIndex < 0)
+            if (DgProducts.SelectedIndex < 0)
                 return;
-            _orderProducts.Remove(CbProducts.SelectedItem as Product);
+            _orderProducts.Remove(DgProducts.SelectedItem as Product);
             NotifyPropertyChanged("TotalPrice"); // Doordat ik zeg: de totaalprijs is veranderd, zal XAML WPF deze property opnieuw ophalen om de user interface aan te passen
         }
 

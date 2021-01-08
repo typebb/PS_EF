@@ -3,10 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:y="clr-namespace:KlantBestellingen.WPF.ValueConverters"
         xmlns:langs="clr-namespace:KlantBestellingen.WPF.Languages"
         xmlns:local="clr-namespace:KlantBestellingen.WPF"
         mc:Ignorable="d"
         Title="Bestellingssysteem" Height="450" Width="800">
+    <Window.Resources>
+        <y:PointCommaConverter x:Key="PointCommaConverter" />
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/> <!-- menu -->
@@ -64,7 +68,7 @@
                     <DataGridTextColumn  Header="{x:Static langs:Translations.OrderID}" Binding="{Binding BestellingId}" MinWidth="200"/>
                     <DataGridTextColumn  Header="{x:Static langs:Translations.Payed}" Binding="{Binding Betaald}" MinWidth="200"/>
                     <DataGridTextColumn  Header="{x:Static langs:Translations.Time}" Binding="{Binding Tijdstip}" MinWidth="200"/>
-                    <DataGridTextColumn  Header="{x:Static langs:Translations.Price}" Binding="{Binding Prijs}" MinWidth="200"/>
+                    <DataGridTextColumn  Header="{x:Static langs:Translations.Price}" Binding="{Binding Prijs, Converter={StaticResource PointCommaConverter}}" MinWidth="200"/>
                 </DataGrid.Columns>
             </DataGrid>
             <Button x:Name="BtnNieuweBestelling" Grid.Row="3" Grid.Column="2" Content="{x:Static langs:Translations.NewOrder}" Click="MaakBestelling_Click" HorizontalAlignment="Right" Margin="5" IsEnabled="False"/>

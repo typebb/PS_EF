@@ -19,26 +19,26 @@
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0" Grid.Column="0">
             <Menu DockPanel.Dock="Top">
-                <MenuItem Header="_Bestand">
-                    <MenuItem Header="_Sluiten" Click="MenuItemSluiten_Click">
+                <MenuItem Header="{x:Static langs:Translations.File}">
+                    <MenuItem Header="{x:Static langs:Translations.Close}" Click="MenuItemSluiten_Click">
                         <MenuItem.Icon>
                             <Image Source="/KlantBestellingen.WPF;component/Images/close.png" />
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="_Beheer">
-                    <MenuItem Header="_Klanten" Click="MenuItem_Klanten_Click">
+                <MenuItem Header="{x:Static langs:Translations.Manage}">
+                    <MenuItem Header="{x:Static langs:Translations.Customers}" Click="MenuItem_Klanten_Click">
                         <MenuItem.Icon>
                             <!-- Build action: content, Copy to Output Directory -->
                             <Image Source="/KlantBestellingen.WPF;component/Images/user.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="_Producten" Click="MenuItem_Producten_Click">
+                    <MenuItem Header="{x:Static langs:Translations.Products}" Click="MenuItem_Producten_Click">
                         <MenuItem.Icon>
                             <Image Source="/KlantBestellingen.WPF;component/Images/product.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="_Bestellingen" Click="MenuItem_Bestellingen_Click">
+                    <MenuItem Header="{x:Static langs:Translations.Orders}" Click="MenuItem_Bestellingen_Click">
                         <MenuItem.Icon>
                             <Image Source="/KlantBestellingen.WPF;component/Images/product.png" />
                         </MenuItem.Icon>
@@ -58,10 +58,10 @@
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Label x:Name="lblKlant" Grid.Row="0" Grid.Column="0" Margin="5" Content="Klantnaam: " VerticalAlignment="Center"/>
+            <Label x:Name="lblKlant" Grid.Row="0" Grid.Column="0" Margin="5" Content="{x:Static langs:Translations.CustomerNameTag}" VerticalAlignment="Center"/>
             <TextBox x:Name="tbKlant" Grid.Row="0" Grid.Column="1" Margin="5" MinWidth="250" KeyUp="TextBox_KeyUp" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
             <ComboBox x:Name="cbKlanten" Grid.Row="0" Grid.Column="2" Margin="5" DisplayMemberPath="Naam" SelectedValuePath="Naam" VerticalAlignment="Center" SelectionChanged="ComboBox_SelectionChanged"/>
-            <Label x:Name="lblBestellingen" Grid.Row="1" Grid.Column="0" Margin="5" Content="Bestellingen: "/>
+            <Label x:Name="lblBestellingen" Grid.Row="1" Grid.Column="0" Margin="5" Content="{x:Static langs:Translations.OrdersTag}"/>
             <DataGrid x:Name="dgOrderSelection" Grid.Row="2" Grid.ColumnSpan="3" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="True" AlternatingRowBackground="#FFB9BBFF" IsReadOnly="True" MouseDoubleClick="dgOrderSelection_MouseDoubleClick" SelectionChanged="dgOrderSelection_SelectionChanged">
                 <DataGrid.Columns>
                     <!-- we linken ons aan een property van de class Klant: -->

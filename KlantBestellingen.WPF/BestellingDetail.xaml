@@ -25,16 +25,16 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Label x:Name="LblKlantnaam" Grid.Row="0" Grid.Column="0" Content="Klant:" Margin="5"/>
+        <Label x:Name="LblKlantnaam" Grid.Row="0" Grid.Column="0" Content="{x:Static langs:Translations.Customer}" Margin="5"/>
         <TextBlock x:Name="TbKlantnaam" Grid.Row="0" Grid.Column="1" Text="{Binding KlantNaam}" Margin="5" ToolTip="Klantnaam"/>
         <TextBlock x:Name="TbKlantadres" Grid.Row="0" Grid.Column="2" Text="{Binding KlantAdres}" Margin="5" ToolTip="Klantadres"/>
-        <TextBlock x:Name="LblPrijs" Grid.Row="1" Grid.Column="1" Text="Prijs: " Margin="5"/>
+        <TextBlock x:Name="LblPrijs" Grid.Row="1" Grid.Column="1" Text="{x:Static langs:Translations.PriceTag}" Margin="5"/>
         <TextBlock x:Name="TbPrijs" Grid.Row="1" Grid.Column="2" Text="{Binding TotalPrice, Converter={StaticResource PointCommaConverter}}" Margin="5"/>
-        <TextBlock x:Name="LblPrijsBetaald" Grid.Row="2" Grid.Column="1" Text="Betaald: " Margin="5"/>
+        <TextBlock x:Name="LblPrijsBetaald" Grid.Row="2" Grid.Column="1" Text="{x:Static langs:Translations.PayedTag}" Margin="5"/>
         <CheckBox x:Name="CbPrijs" Grid.Row="2" Grid.Column="2" IsChecked="{Binding Betaald}" Margin="5" ToolTip="Is de bestelling betaald?"/>
-        <Label x:Name="LblAddProduct" Grid.Row="3" Content="Producten: " Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left"></Label>
+        <Label x:Name="LblAddProduct" Grid.Row="3" Content="{x:Static langs:Translations.Products}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left"></Label>
         <ComboBox x:Name="CbProducts" Grid.Row="3" Grid.Column="1" MinWidth="250" Margin="5" VerticalAlignment="Center" SelectedValuePath="Naam" DisplayMemberPath="Naam"></ComboBox>
-        <Button x:Name="BtnProductAdd" Grid.Row="3" Grid.Column="2" Content="Voeg toe" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Right" Click="BtnProductAdd_Click"/>
+        <Button x:Name="BtnProductAdd" Grid.Row="3" Grid.Column="2" Content="{x:Static langs:Translations.Add}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Right" Click="BtnProductAdd_Click"/>
         <DataGrid x:Name="DgProducts" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="True" AlternatingRowBackground="#FFB9BBFF" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static langs:Translations.Name}" Binding="{Binding Naam}" MinWidth="200"/>
@@ -48,6 +48,6 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Grid.Row="5" Grid.Column="2" Content="Sla op" HorizontalAlignment="Right" Margin="5" Click="SlaBestellingOp_Click" VerticalAlignment="Bottom"/>
+        <Button Grid.Row="5" Grid.Column="2" Content="{x:Static langs:Translations.Save}" HorizontalAlignment="Right" Margin="5" Click="SlaBestellingOp_Click" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

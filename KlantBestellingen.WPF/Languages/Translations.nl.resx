@@ -129,14 +129,38 @@
   <data name="Amount" xml:space="preserve">
     <value>Aantal</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>Sluiten</value>
+  </data>
+  <data name="Customer" xml:space="preserve">
+    <value>Klant</value>
+  </data>
   <data name="CustomerID" xml:space="preserve">
     <value>Klant nummer</value>
+  </data>
+  <data name="CustomerName" xml:space="preserve">
+    <value>Klant Naam</value>
+  </data>
+  <data name="CustomerNameTag" xml:space="preserve">
+    <value>Klant Naam: </value>
+  </data>
+  <data name="Customers" xml:space="preserve">
+    <value>Klanten</value>
+  </data>
+  <data name="CustomerTag" xml:space="preserve">
+    <value>Klant: </value>
   </data>
   <data name="ExceptionRaised" xml:space="preserve">
     <value>Er deed zich een fout voor</value>
   </data>
+  <data name="File" xml:space="preserve">
+    <value>Bestand</value>
+  </data>
   <data name="Id" xml:space="preserve">
     <value>Nummer</value>
+  </data>
+  <data name="Manage" xml:space="preserve">
+    <value>Beheer</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Naam</value>
@@ -150,8 +174,17 @@
   <data name="OrderID" xml:space="preserve">
     <value>Bestelling nummer</value>
   </data>
+  <data name="Orders" xml:space="preserve">
+    <value>Bestellingen</value>
+  </data>
+  <data name="OrdersTag" xml:space="preserve">
+    <value>Bestellingen: </value>
+  </data>
   <data name="Payed" xml:space="preserve">
     <value>Betaald</value>
+  </data>
+  <data name="PayedTag" xml:space="preserve">
+    <value>Betaald: </value>
   </data>
   <data name="Price" xml:space="preserve">
     <value>Prijs</value>
@@ -162,8 +195,14 @@
   <data name="ProductCount" xml:space="preserve">
     <value>Aantal Producten: </value>
   </data>
+  <data name="Products" xml:space="preserve">
+    <value>Producten</value>
+  </data>
   <data name="Remove" xml:space="preserve">
     <value>Verwijder</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Sla Op</value>
   </data>
   <data name="Time" xml:space="preserve">
     <value>Tijd</value>

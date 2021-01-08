@@ -163,8 +163,7 @@ namespace KlantBestellingen.WPF
             if (Order != null) id = Order.BestellingId;
             _order = new Bestelling(id, Klant, DateTime.Now, orderProducts) // Id 0 betekent voor database een primary key aanmaken want dit is een identity primary key
             {
-                Betaald = (bool)CbPrijs.IsChecked,
-                PrijsBetaald = total
+                Betaald = (bool)CbPrijs.IsChecked//, PrijsBetaald = total
             };
             Context.BestellingManager.VoegToe(_order);
         }

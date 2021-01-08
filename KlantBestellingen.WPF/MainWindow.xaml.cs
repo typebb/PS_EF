@@ -110,7 +110,7 @@ namespace KlantBestellingen.WPF
         {
             Refresh(sender, e);
         }
-
+        
         /// <summary>
         /// Tip: interessant voor eindopdracht!
         /// </summary>

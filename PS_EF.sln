@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4C4F84AA-CC9C-4B16-830F-A71B6A2B2B13}"
 	ProjectSection(SolutionItems) = preProject
 		db.txt = db.txt
+		..\..\..\..\..\dbM.txt = ..\..\..\..\..\dbM.txt
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkRepository", "EntityFrameworkRepository\EntityFrameworkRepository.csproj", "{165D208F-E4DB-4916-8AFC-324CA2104F68}"

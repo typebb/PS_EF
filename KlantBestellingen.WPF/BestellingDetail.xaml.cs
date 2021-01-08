@@ -159,6 +159,7 @@ namespace KlantBestellingen.WPF
                 }
                 total += p.Prijs;
             }
+
             _order = new Bestelling(0, Klant, DateTime.Now, orderProducts) // Id 0 betekent voor database een primary key aanmaken want dit is een identity primary key
             {
                 Betaald = (bool)CbPrijs.IsChecked,

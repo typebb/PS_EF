@@ -23,8 +23,10 @@
         <DataGrid x:Name="dgKlanten" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="True" AlternatingRowBackground="#FFB9BBFF" IsReadOnly="True" PreviewKeyDown="dgKlanten_PreviewKeyDown">
             <DataGrid.Columns>
                 <!-- we linken ons aan een property van de class Klant: -->
+                <DataGridTextColumn Header="{x:Static langs:Translations.CustomerID}" Binding="{Binding KlantId}" MinWidth="150"/>
                 <DataGridTextColumn Header="{x:Static langs:Translations.Name}" Binding="{Binding Naam}" MinWidth="200"/>
                 <DataGridTextColumn Header="{x:Static langs:Translations.Address}" Binding="{Binding Adres}" MinWidth="500"/>
+                
 <!--                
                 <DataGridTextColumn Header="Adreslengte" Binding="{Binding Adres, Converter={StaticResource slc}}" MinWidth="50"/>
 -->

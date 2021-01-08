@@ -97,6 +97,15 @@ namespace KlantBestellingen.WPF.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Customer ID.
+        /// </summary>
+        public static string CustomerID {
+            get {
+                return ResourceManager.GetString("CustomerID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An exception was raised.
         /// </summary>
         public static string ExceptionRaised {
@@ -129,6 +138,24 @@ namespace KlantBestellingen.WPF.Languages {
         public static string NameTag {
             get {
                 return ResourceManager.GetString("NameTag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order ID.
+        /// </summary>
+        public static string OrderID {
+            get {
+                return ResourceManager.GetString("OrderID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payed.
+        /// </summary>
+        public static string Payed {
+            get {
+                return ResourceManager.GetString("Payed", resourceCulture);
             }
         }
         

@@ -167,6 +167,19 @@ namespace BusinessLayer.Model
             Console.WriteLine(this);
             foreach (Bestelling b in _bestellingen) Console.WriteLine($"    bestelling:{b}");
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Klant klant &&
+                   KlantId == klant.KlantId &&
+                   Naam == klant.Naam &&
+                   Adres == klant.Adres;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(KlantId, Naam, Adres);
+        }
         #endregion
     }
 }

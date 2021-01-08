@@ -39,9 +39,11 @@ namespace BusinessLayer.Managers
                         klantL.Add(klant);
                     }
                     dataReader.Close();
+                    /*
                     for (int i = 0; i < klantL.Count; i++)
                         foreach (Bestelling b in FindBestellingen(klantL[i], connection))
                             if (!klantL[i].HeeftBestelling(b)) klantL[i].VoegToeBestelling(b);
+                    */
                 }
                 catch (Exception ex)
                 {
@@ -74,9 +76,11 @@ namespace BusinessLayer.Managers
                         klantL.Add(klant);
                     }
                     dataReader.Close();
+                    /*
                     for (int i = 0; i < klantL.Count; i++)
                         foreach (Bestelling b in FindBestellingen(klantL[i], connection))
                             if (!klantL[i].HeeftBestelling(b)) klantL[i].VoegToeBestelling(b);
+                    */
                 }
                 catch (Exception ex)
                 {
@@ -300,7 +304,9 @@ namespace BusinessLayer.Managers
                     IDataReader dataReader = command.ExecuteReader();
                     while (dataReader.Read())
                     {
-                        bestellingen.Add(new Bestelling((long)dataReader["ORDER_ID"], klant, (DateTime)dataReader["TIME"]));
+                        Bestelling bestelling = new Bestelling((long)dataReader["ORDER_ID"], klant, (DateTime)dataReader["TIME"]);
+                        if ((int)dataReader["PAID"] > 0) bestelling.ZetBetaald();
+                        bestellingen.Add(bestelling);
                     }
                     dataReader.Close();
                     for (int i = 0; i < bestellingen.Count; i++)

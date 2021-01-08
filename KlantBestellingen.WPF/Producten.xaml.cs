@@ -86,5 +86,14 @@ namespace KlantBestellingen.WPF
                 BtnNieuwProduct.IsEnabled = false;
             }
         }
+
+        private void Verwijder_Button_Click(object sender, RoutedEventArgs e)
+        {
+            while (dgProducten.SelectedItems.Count > 0)
+            {
+                var row = dgProducten.SelectedItems[0];
+                _producten.Remove(row as Product);
+            }
+        }
     }
 }

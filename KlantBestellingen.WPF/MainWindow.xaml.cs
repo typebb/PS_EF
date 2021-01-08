@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using BusinessLayer.Model;
 
 namespace KlantBestellingen.WPF
 {
@@ -15,6 +16,7 @@ namespace KlantBestellingen.WPF
         private Klanten _customerWindow = new Klanten();
         private Producten _productsWindow = new Producten();
         private BestellingDetail _bestellingDetailWindow = new BestellingDetail();
+        private Bestellingen _bestellingWindow = new Bestellingen();
         #endregion
 
         public MainWindow()
@@ -24,6 +26,7 @@ namespace KlantBestellingen.WPF
             _customerWindow.Closing += _Window_Closing;
             _productsWindow.Closing += _Window_Closing;
             _bestellingDetailWindow.Closing += _Window_Closing;
+            _bestellingWindow.Closing += _Window_Closing;
         }
 
         /// <summary>
@@ -67,6 +70,11 @@ namespace KlantBestellingen.WPF
             if (_productsWindow != null)
                 _productsWindow.Show();
         }
+        private void MenuItem_Bestellingen_Click(object sender, RoutedEventArgs e)
+        {
+            if (_bestellingWindow != null)
+                _bestellingWindow.Show();
+        }
 
         /// <summary>
         /// We sluiten de volledige applicatie af
@@ -87,7 +95,7 @@ namespace KlantBestellingen.WPF
                 return;
             }
             // Tip: maak dit case insensitive voor "meer punten" ;-) Nog beter: reguliere expressies gebruiken
-            var klanten = Context.KlantManager.HaalOp(k => k.Naam.Contains(tbKlant.Text));
+            var klanten = Context.KlantManager.HaalOp(k => k.Naam.ToLower().Contains(tbKlant.Text.ToLower()));
             cbKlanten.ItemsSource = klanten;
             // Indien er effectief klanten zijn, maak dan dat de eerste klant in de lijst meteen voorgeselecteerd is in de combobox:
             if(klanten.Count > 0)
@@ -111,7 +119,7 @@ namespace KlantBestellingen.WPF
             if (cbKlanten.SelectedItem != null)
             {
                 // Indien er een klant geselecteerd is, dan tonen we de bestellingen van die klant
-                var bestellingen = Context.BestellingManager.HaalOp(b => b.Klant == cbKlanten.SelectedItem);
+                var bestellingen = Context.BestellingManager.HaalOp(b => b.Klant.Equals(cbKlanten.SelectedItem));
                 dgOrderSelection.ItemsSource = bestellingen;
             }
             else
@@ -131,6 +139,13 @@ namespace KlantBestellingen.WPF
 
             _bestellingDetailWindow.Klant = cbKlanten.SelectedItem as BusinessLayer.Model.Klant;
             _bestellingDetailWindow.Order = null;
+            _bestellingDetailWindow.Show();
+        }
+
+        private void dgOrderSelection_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            _bestellingDetailWindow.Klant = cbKlanten.SelectedItem as BusinessLayer.Model.Klant;
+            _bestellingDetailWindow.Order = dgOrderSelection.SelectedItem as BusinessLayer.Model.Bestelling;
             _bestellingDetailWindow.Show();
         }
     }

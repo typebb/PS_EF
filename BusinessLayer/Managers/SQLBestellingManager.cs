@@ -36,12 +36,14 @@ namespace BusinessLayer.Managers
                     while (dataReader.Read())
                     {
                         Bestelling bestelling = new Bestelling((long)dataReader["ORDER_ID"], new Klant((long)dataReader["CUSTOMER_ID"], (string)dataReader["NAME"], (string)dataReader["ADDRESS"]), (DateTime)dataReader["TIME"]);
-
+                        if ((int)dataReader["PAID"] > 0) bestelling.ZetBetaald();
                         besL.Add(bestelling);
                     }
                     dataReader.Close();
+                    /*
                     for (int i = 0; i < besL.Count; i++)
                         foreach (KeyValuePair<Product, int> p in FindProducten(besL[i].BestellingId, connection)) besL[i].VoegProductToe(p.Key, p.Value);
+                    */
                 }
                 catch (Exception ex)
                 {
@@ -71,11 +73,14 @@ namespace BusinessLayer.Managers
                     while (dataReader.Read())
                     {
                         Bestelling bestelling = new Bestelling((long)dataReader["ORDER_ID"], new Klant((long)dataReader["CUSTOMER_ID"], (string)dataReader["NAME"], (string)dataReader["ADDRESS"]), (DateTime)dataReader["TIME"]);
+                        if ((int)dataReader["PAID"] > 0) bestelling.ZetBetaald();
                         besL.Add(bestelling);
                     }
                     dataReader.Close();
+                    
                     for (int i = 0; i < besL.Count; i++)
                         foreach (KeyValuePair<Product, int> p in FindProducten(besL[i].BestellingId, connection)) besL[i].VoegProductToe(p.Key, p.Value);
+                    
                 }
                 catch (Exception ex)
                 {
@@ -108,8 +113,10 @@ namespace BusinessLayer.Managers
                     IDataReader dataReader = command.ExecuteReader();
                     dataReader.Read();
                     Bestelling bestelling = new Bestelling((long)dataReader["ORDER_ID"], new Klant((long)dataReader["CUSTOMER_ID"], (string)dataReader["NAME"], (string)dataReader["ADDRESS"]), (DateTime)dataReader["TIME"]);
+                    if ((int)dataReader["PAID"] > 0) bestelling.ZetBetaald();
                     dataReader.Close();
                     foreach (KeyValuePair<Product, int> p in FindProducten(id, connection)) bestelling.VoegProductToe(p.Key, p.Value);
+                    
                     return bestelling;
                 }
                 catch (Exception ex)
@@ -130,7 +137,7 @@ namespace BusinessLayer.Managers
             if (sqlConnection is null)
                 connection = GetConnection();
             else connection = sqlConnection;
-            string query = "SELECT count(*) FROM [Bestellingssysteem].[dbo].[ORDER] o JOIN [Bestellingssysteem].[dbo].[CUSTOMER] c ON (o.CUSTOMER_ID = c.CUSTOMER_ID) WHERE ORDER_ID=@id";
+            string query = "SELECT count(*) FROM [Bestellingssysteem].[dbo].[ORDER] WHERE ORDER_ID=@id";
 
             using (SqlCommand command = connection.CreateCommand())
             {
@@ -195,7 +202,7 @@ namespace BusinessLayer.Managers
                 connection.Open();
                 try
                 {
-
+                    anItem.ZetBetaald(anItem.Betaald);
                     command.Parameters.Add(new SqlParameter("@tijd", SqlDbType.DateTime));
                     command.Parameters.Add(new SqlParameter("@klantId", SqlDbType.BigInt));
                     command.Parameters.Add(new SqlParameter("@betaald", SqlDbType.Int));
@@ -203,7 +210,7 @@ namespace BusinessLayer.Managers
 
                     command.Parameters["@tijd"].Value = anItem.Tijdstip;
                     command.Parameters["@klantId"].Value = anItem.Klant.KlantId;
-                    command.Parameters["@betaald"].Value = anItem.PrijsBetaald;
+                    command.Parameters["@betaald"].Value = (int)anItem.PrijsBetaald;
                     command.Parameters["@prijs"].Value = (decimal)anItem.Kostprijs();
                     long orderID;
                     if (HeeftBestelling(anItem.BestellingId, connection) == false)

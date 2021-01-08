@@ -13,11 +13,14 @@ namespace KlantBestellingen.WPF
     public static class Context
     {
         #region Properties
-        public static IDFactory IdFactory { get; } = new IDFactory(0, 100, 5000);
+        //public static IDFactory IdFactory { get; } = new IDFactory(0, 100, 5000);
         // DbKlantManager!
-        public static IManager<Klant> KlantManager { get; } = new DbKlantManager(); // Experimenteer: kan ook nog altijd KlantManager zijn!
-        public static IManager<Product> ProductManager { get; } = new ProductManager();
-        public static IManager<Bestelling> BestellingManager { get; } = new BestellingManager();
+        //public static IManager<Klant> KlantManager { get; } = new DbKlantManager(); // Experimenteer: kan ook nog altijd KlantManager zijn!
+        //public static IManager<Product> ProductManager { get; } = new ProductManager();
+        //public static IManager<Bestelling> BestellingManager { get; } = new BestellingManager();
+        public static IManager<Klant> KlantManager { get; } = new SQLKlantManager(@"Data Source=LAPTOP-263M7I30\SQLEXPRESS;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+        public static IManager<Product> ProductManager { get; } = new SQLProductManager(@"Data Source=LAPTOP-263M7I30\SQLEXPRESS;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+        public static IManager<Bestelling> BestellingManager { get; } = new SQLBestellingManager(@"Data Source=LAPTOP-263M7I30\SQLEXPRESS;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
         #endregion
 
         // private static DispatcherTimer _timer; // is operationeel volledig los van WPF en de andere code

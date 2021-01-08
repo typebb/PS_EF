@@ -129,6 +129,9 @@
   <data name="Amount" xml:space="preserve">
     <value>Amount</value>
   </data>
+  <data name="CustomerID" xml:space="preserve">
+    <value>Customer ID</value>
+  </data>
   <data name="ExceptionRaised" xml:space="preserve">
     <value>An exception was raised</value>
   </data>
@@ -140,6 +143,12 @@
   </data>
   <data name="NameTag" xml:space="preserve">
     <value>Name: </value>
+  </data>
+  <data name="OrderID" xml:space="preserve">
+    <value>Order ID</value>
+  </data>
+  <data name="Payed" xml:space="preserve">
+    <value>Payed</value>
   </data>
   <data name="Price" xml:space="preserve">
     <value>Price</value>

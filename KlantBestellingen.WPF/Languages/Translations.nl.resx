@@ -129,6 +129,9 @@
   <data name="Amount" xml:space="preserve">
     <value>Aantal</value>
   </data>
+  <data name="CustomerID" xml:space="preserve">
+    <value>Klant nummer</value>
+  </data>
   <data name="ExceptionRaised" xml:space="preserve">
     <value>Er deed zich een fout voor</value>
   </data>
@@ -140,6 +143,12 @@
   </data>
   <data name="NameTag" xml:space="preserve">
     <value>Naam: </value>
+  </data>
+  <data name="OrderID" xml:space="preserve">
+    <value>Bestelling nummer</value>
+  </data>
+  <data name="Payed" xml:space="preserve">
+    <value>Betaald</value>
   </data>
   <data name="Price" xml:space="preserve">
     <value>Prijs</value>
